@@ -1,5 +1,5 @@
 
-const protocol = require('./musician-protocol');
+const protocol = require('../../image-musician/src/musician-protocol');
 
 const dgram = require('dgram');
 
