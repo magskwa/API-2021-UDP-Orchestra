@@ -10,7 +10,7 @@ const protocol = require('./musician-protocol');
 const uuid = require('uuid');
 // We use a standard Node.js module to work with UDP
 const dgram = require('dgram');
-// Let's create a datagram socket. We will use it to send our UDP datagrams
+
 const s = dgram.createSocket('udp4');
 // Create a measure object and serialize it to JSON
 var sound = { timestamp: Date.now(),
