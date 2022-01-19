@@ -1,4 +1,13 @@
-const protocol = require('./sensor-protocol');
+const soundDict = {};
+soundDict['piano'] = 'ti-ta-ti';
+soundDict['trumpet'] = 'pouet';
+soundDict['flute'] = 'trulu';
+soundDict['violin'] = 'gzi-gzi';
+soundDict['drum'] = 'boum-boum';
+
+const protocol = require('./musician-protocol');
+
+const uuid = require('uuid');
 // We use a standard Node.js module to work with UDP
 const dgram = require('dgram');
 // Let's create a datagram socket. We will use it to send our UDP datagrams
