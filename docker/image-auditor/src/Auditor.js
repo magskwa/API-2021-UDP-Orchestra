@@ -16,13 +16,19 @@ s.on('message', function(msg, source) {
     console.log("Data has arrived: " + msg + ". Source IP: " + source.address +
         ". Source port: " + source.port);
     var data = String(msg).split(',');
-    console.log(data);
+    //console.log(data);
 
     var uuid = data[1].split(':')[1].substr(1, data[1].split(':')[1].length - 2);
-    console.log(uuid);
+    //console.log(uuid);
 
-    var instrument = data[2].split(':')[2].substr(1, data[1].split(':')[2].length - 2);
+    var instrument = data[2].split(':')[1].substr(1, data[2].split(':')[1].length - 2);
+    //console.log(instrument);
 
+    musicianDict[uuid] = {
+        uuid: uuid,
+        instrument: instrument,
+        activeSince: new Date(parseInt(Date.now())).toISOString()
+    };
 
     console.log('Dict after message:\r\n');
     console.log(musicianDict);
