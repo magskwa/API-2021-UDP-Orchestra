@@ -68,6 +68,7 @@ server.on('connection', function(socket) {
     socket.on('error', function(err) {
         console.log(`Error: ${err}`);
     });
+
 });
 
 function checkActiveMusician() {
