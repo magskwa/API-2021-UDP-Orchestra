@@ -30,12 +30,8 @@ s.on('message', function(msg, source) {
         activeSince: new Date(parseInt(Date.now())).toISOString()
     };
 
-    console.log('Dict after message:\r\n');
+    //console.log('Dict after message:\r\n');
     //console.log(musicianDict);
-
-});
-
-
 
 const Net = require('net');
 const port = 2205;
@@ -73,3 +69,17 @@ server.on('connection', function(socket) {
         console.log(`Error: ${err}`);
     });
 });
+
+function checkActiveMusician() {
+    for (value of Object.values(musicianDict)) {
+        if (new Date(parseInt(Date.now())) - new Date(value.activeSince) > 5000) {
+            //console.log('Musician with uuid ' + value.uuid + ' has not played for more than 5 seconds.');
+            delete musicianDict[value.uuid];
+
+            //console.log('Updated dict:\r\n');
+            //console.log(musicianDict);
+        }
+    }
+}
+
+setInterval(checkActiveMusician, 1000);
