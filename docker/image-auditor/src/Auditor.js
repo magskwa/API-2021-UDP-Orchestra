@@ -30,7 +30,21 @@ s.on('message', function(msg, source) {
         activeSince: new Date(parseInt(Date.now())).toISOString()
     };
 
-    console.log('Dict after message:\r\n');
-    console.log(musicianDict);
+    //console.log('Dict after message:\r\n');
+    //console.log(musicianDict);
 
 });
+
+function checkActiveMusician() {
+    for (value of Object.values(musicianDict)) {
+        if (new Date(parseInt(Date.now())) - new Date(value.activeSince) > 5000) {
+            //console.log('Musician with uuid ' + value.uuid + ' has not played for more than 5 seconds.');
+            delete musicianDict[value.uuid];
+
+            //console.log('Updated dict:\r\n');
+            //console.log(musicianDict);
+        }
+    }
+}
+
+setInterval(checkActiveMusician, 1000);
