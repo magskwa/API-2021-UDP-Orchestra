@@ -110,13 +110,13 @@ Reminder: answer the following questions [here](https://forms.gle/6SM7cu4cYhNsRv
 |Question | How can we represent the system in an **architecture diagram**, which gives information both about the Docker containers, the communication protocols and the commands? |
 | | *Insert your diagram here...* |
 |Question | Who is going to **send UDP datagrams** and **when**? |
-| | *Enter your response here...* |
+| | Les datagrams UDP sont envoyé toutes les secondes par chaque musicien |
 |Question | Who is going to **listen for UDP datagrams** and what should happen when a datagram is received? |
-| | *Enter your response here...* |
+| | Les datagrams sont récupérés par le/les auditors ce qui lui permet d'actualiser sa liste de musiciens |
 |Question | What **payload** should we put in the UDP datagrams? |
-| | *Enter your response here...* |
+| | Nous mettons dans chaque datagram le timestamp, le uuid, le nom de l'instrument ainsi que le son qu'il produit. Le tout est sous format JSON. |
 |Question | What **data structures** do we need in the UDP sender and receiver? When will we update these data structures? When will we query these data structures? |
-| | *Enter your response here...* |
+| | Dans la partie musicien (sender), nous utilisons un dictionnaire qui associe le nom d'un instrument avec le son qu'il emet. Ce dictionnaire n'est pas mis à jour. Cette structure est utilisé à chaque fois que l'on veut connaître un son associé à un instrument. Dans la partie auditeur (receiver), nous utilisons un autre dictionnaire qui contient le uuid, l'instrument et depuis quand il est actif. Ce dictionnaire est mis à jour à chaque fois qu'un nouveau datagram est reçu. Cette structure de données est utilisé à chaque fois que l'on envoie un paquet TCP.|
 
 
 ## Task 2: implement a "musician" Node.js application
@@ -124,21 +124,21 @@ Reminder: answer the following questions [here](https://forms.gle/6SM7cu4cYhNsRv
 | #  | Topic |
 | ---  | --- |
 |Question | In a JavaScript program, if we have an object, how can we **serialize it in JSON**? |
-| | *Enter your response here...*  |
+| | Grâce à la fonction JSON.stringify |
 |Question | What is **npm**?  |
-| | *Enter your response here...*  |
+| | Le package manager officiel de node  |
 |Question | What is the `npm install` command and what is the purpose of the `--save` flag?  |
-| | *Enter your response here...*  |
+| | npm install permet d'installer un package. --save permet d'ajouter les packages en dependency  |
 |Question | How can we use the `https://www.npmjs.com/` web site?  |
-| | *Enter your response here...*  |
+| | Il est possible d'y trouver des modules et de pouvoir les utiliser en les installant.  |
 |Question | In JavaScript, how can we **generate a UUID** compliant with RFC4122? |
-| | *Enter your response here...*  |
+| | En installant le package et en utilisant la méthode v4()  |
 |Question | In Node.js, how can we execute a function on a **periodic** basis? |
-| | *Enter your response here...*  |
+| |  Grâce à la fonction send du socket  |
 |Question | In Node.js, how can we **emit UDP datagrams**? |
-| | *Enter your response here...*  |
+| | Premièrement il faut créer un socket : const s = dgram.createSocket('udp4'); Ensuite nous pouvons l'envoyer grâce à la methode send.|
 |Question | In Node.js, how can we **access the command line arguments**? |
-| | *Enter your response here...*  |
+| | Grâce à la fonction process.argv, par exemple pour accéder au premier argument : process.argv[2]  |
 
 
 ## Task 3: package the "musician" app in a Docker image
@@ -146,17 +146,17 @@ Reminder: answer the following questions [here](https://forms.gle/6SM7cu4cYhNsRv
 | #  | Topic |
 | ---  | --- |
 |Question | How do we **define and build our own Docker image**?|
-| | *Enter your response here...*  |
+| | Nous definissons l'image docker souhaité dans le docker file et ensuite nous utilisons la commande docker build afin de construire l'image. |
 |Question | How can we use the `ENTRYPOINT` statement in our Dockerfile?  |
-| | *Enter your response here...*  |
+| | Nous utilisons l'entrypoint pour executer la commande node ????  |
 |Question | After building our Docker image, how do we use it to **run containers**?  |
-| | *Enter your response here...*  |
+| | En utilisant la commande docker run <nom_image> <instrument>  |
 |Question | How do we get the list of all **running containers**?  |
-| | *Enter your response here...*  |
+| | En utilisant la commande docker ps |
 |Question | How do we **stop/kill** one running container?  |
-| | *Enter your response here...*  |
+| | docker kill <nom_container>  |
 |Question | How can we check that our running containers are effectively sending UDP datagrams?  |
-| | *Enter your response here...*  |
+| | Par exemple en affichant les logs sur la console  |
 
 
 ## Task 4: implement an "auditor" Node.js application
@@ -164,15 +164,15 @@ Reminder: answer the following questions [here](https://forms.gle/6SM7cu4cYhNsRv
 | #  | Topic |
 | ---  | ---  |
 |Question | With Node.js, how can we listen for UDP datagrams in a multicast group? |
-| | *Enter your response here...*  |
+| | En utilisant la fonction bind() du socket  |
 |Question | How can we use the `Map` built-in object introduced in ECMAScript 6 to implement a **dictionary**?  |
-| | *Enter your response here...* |
+| | const instruments = new Map(); instruments.set("piano", "ti-ta-ti");|
 |Question | How can we use the `Moment.js` npm module to help us with **date manipulations** and formatting?  |
-| | *Enter your response here...* |
+| | Cela permet de formater la date et l'heure facilement grâce à la fonction format() |
 |Question | When and how do we **get rid of inactive players**?  |
-| | *Enter your response here...* |
+| | Toutes les secondes, la fonction checkActiveMusician permet d'effacer les musiciens qui n'ont pas émis de son ces 5 dernières secondes. |
 |Question | How do I implement a **simple TCP server** in Node.js?  |
-| | *Enter your response here...* |
+| | Grâce à la librairie net et en utilisant ça fonction server() |
 
 
 ## Task 5: package the "auditor" app in a Docker image
@@ -180,7 +180,7 @@ Reminder: answer the following questions [here](https://forms.gle/6SM7cu4cYhNsRv
 | #  | Topic |
 | ---  | --- |
 |Question | How do we validate that the whole system works, once we have built our Docker image? |
-| | *Enter your response here...* |
+| | En executant le script validate.sh |
 
 
 ## Constraints

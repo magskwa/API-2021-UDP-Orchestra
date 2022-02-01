@@ -30,57 +30,58 @@ s.on('message', function(msg, source) {
         activeSince: new Date(parseInt(Date.now())).toISOString()
     };
 
+    function checkActiveMusician() {
+        for (value of Object.values(musicianDict)) {
+            if (new Date(parseInt(Date.now())) - new Date(value.activeSince) > 5000) {
+                //console.log('Musician with uuid ' + value.uuid + ' has not played for more than 5 seconds.');
+                delete musicianDict[value.uuid];
+
+                //console.log('Updated dict:\r\n');
+                //console.log(musicianDict);
+            }
+        }
+    }
+    setInterval(checkActiveMusician, 1000);
+});
+
     //console.log('Dict after message:\r\n');
     //console.log(musicianDict);
 
-const Net = require('net');
-const port = 2205;
 
-const server = new Net.Server();
+    const Net = require('net');
+    const port = 2205;
 
-server.listen(port, function() {
-    console.log('Server listening for connection requests');
-});
+    const server = new Net.Server();
 
-
-
-server.on('connection', function(socket) {
-    console.log('A new connection has been established.');
-
-    // écrire la liste des musicien
-    socket.write("Hello you\n");
-    for( value of Object.values(musicianDict)){
-        socket.write(JSON.stringify(value));
-    }
-
-    server.close(function () {
-        console.log('server closed.');
-        server.unref();
-    });
-    /*
-
-    socket.on('end', function() {
-        console.log('Closing connection with the client');
+    server.listen(port, function () {
+        console.log('Server listening for connection requests');
     });
 
-     */
 
-    socket.on('error', function(err) {
-        console.log(`Error: ${err}`);
-    });
+    server.on('connection', function (socket) {
+        console.log('A new connection has been established.');
 
-});
-
-function checkActiveMusician() {
-    for (value of Object.values(musicianDict)) {
-        if (new Date(parseInt(Date.now())) - new Date(value.activeSince) > 5000) {
-            //console.log('Musician with uuid ' + value.uuid + ' has not played for more than 5 seconds.');
-            delete musicianDict[value.uuid];
-
-            //console.log('Updated dict:\r\n');
-            //console.log(musicianDict);
+        // écrire la liste des musicien
+        socket.write("Hello you\n");
+        for (value of Object.values(musicianDict)) {
+            socket.write(JSON.stringify(value));
         }
-    }
-}
+        /*
+                server.close(function () {
+                    console.log('server closed.');
+                    server.unref();
+                });
 
-setInterval(checkActiveMusician, 1000);
+
+                socket.on('end', function() {
+                    console.log('Closing connection with the client');
+                });
+
+                 */
+
+        socket.end();
+
+    });
+
+
+
