@@ -1,13 +1,8 @@
 const uuid = require("uuid");
-const protocol = require("./musician-protocol");
+const protocol = require("./musician-protocol.js");
 const dgram = require('dgram');
 
-const soundDict = {};
-soundDict['piano'] = 'ti-ta-ti';
-soundDict['trumpet'] = 'pouet';
-soundDict['flute'] = 'trulu';
-soundDict['violin'] = 'gzi-gzi';
-soundDict['drum'] = 'boum-boum';
+const soundDict = protocol.SOUNDS;
 
 // We use a standard Node.js module to work with UDP
 const s = dgram.createSocket('udp4');
