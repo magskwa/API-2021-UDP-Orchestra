@@ -148,7 +148,7 @@ Reminder: answer the following questions [here](https://forms.gle/6SM7cu4cYhNsRv
 |Question | How do we **define and build our own Docker image**?|
 | | Nous definissons l'image docker souhaité dans le docker file et ensuite nous utilisons la commande docker build afin de construire l'image. |
 |Question | How can we use the `ENTRYPOINT` statement in our Dockerfile?  |
-| | Nous utilisons l'entrypoint pour executer la commande node ????  |
+| | Nous utilisons l'entrypoint pour executer la commande node /opt/app/index.js  |
 |Question | After building our Docker image, how do we use it to **run containers**?  |
 | | En utilisant la commande docker run <nom_image> <instrument>  |
 |Question | How do we get the list of all **running containers**?  |
