@@ -7,14 +7,11 @@ const dgram = require('dgram');
 const s = dgram.createSocket('udp4');
 
 s.bind(protocol.PROTOCOL_PORT, function() {
-    console.log("Joining multicast group");
     s.addMembership(protocol.PROTOCOL_MULTICAST_ADDRESS);
 });
 
 
 s.on('message', function(msg, source) {
-    console.log("Data has arrived: " + msg + ". Source IP: " + source.address +
-        ". Source port: " + source.port);
     var data = String(msg).split(',');
 
     var uuid = data[1].split(':')[1].substr(1, data[1].split(':')[1].length - 2);
@@ -27,19 +24,11 @@ s.on('message', function(msg, source) {
     };
 });
 
-function checkActiveMusician() {
-    for (value of Object.values(musicianDict)) {
-        if (new Date(parseInt(Date.now())) - new Date(value.activeSince) > 5000) {
-            delete musicianDict[value.uuid];
-        }
-    }
-}
 setInterval(checkActiveMusician, 1000);
 
 function checkActiveMusician() {
     for (value of Object.values(musicianDict)) {
         if (new Date(parseInt(Date.now())) - new Date(value.activeSince) > 5000) {
-            //console.log('Musician with uuid ' + value.uuid + ' has not played for more than 5 seconds.');
             delete musicianDict[value.uuid];
         }
     }
@@ -61,11 +50,12 @@ server.listen(port, function () {
 server.on('connection', function (socket) {
     console.log('A new connection has been established.');
 
+    var musicianArray = [];
     // écrire la liste des musicien
     for (value of Object.values(musicianDict)) {
-        socket.write(JSON.stringify(value));
+        musicianArray.push(value);
     }
-
+    socket.write(JSON.stringify(musicianArray));
     socket.end();
 
 });

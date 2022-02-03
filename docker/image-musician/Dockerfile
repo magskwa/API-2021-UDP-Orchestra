@@ -4,4 +4,4 @@ WORKDIR /opt/app/
 
 COPY /src/ /opt/app
 
-CMD ["node", "/opt/app/index.js"]
+ENTRYPOINT ["node", "/opt/app/index.js"]

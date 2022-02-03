@@ -7,32 +7,32 @@ var chance = new Chance();
 function killAllContainers() {
 	docker.listContainers(function(err, containers) {
 		containers.forEach(function( container) {
-			if (container.Image === "res/musician" || container.Image === "res/auditor") {
+			if (container.Image === "api/musician" || container.Image === "api/auditor") {
 				console.log("Killing " + container.Id + " : " + container.Image);
 				var c = docker.getContainer(container.Id);
 				c.kill({}, function(err, data){});
 			}
 		});
-	});	
+	});
 }
 
 function killRandomMusicianContainer() {
 	docker.listContainers(function(err, containers) {
 		var musicians = containers.filter( function (container ) {
-			return container.Image === "res/musician";
+			return container.Image === "api/musician";
 		});
 		if (musicians.length !== 0) {
 			console.log("There are " + musicians.length + " musicians, let's kill one");
 			var c = docker.getContainer(chance.pickone(musicians).Id);
-			c.kill({}, function(err, data){console.log("killed " + c.id)});			
+			c.kill({}, function(err, data){console.log("killed " + c.id)});
 		} else {
-			console.log("There are no musicians to kill.");			
+			console.log("There are no musicians to kill.");
 		}
-	});		
+	});
 }
 
 function startContainer( image, command, containerHasStarted ) {
-	
+
 	/*
 	 * Firstly, we use dockerode to create a new container and pass the image and 
 	 * command arguments that we have received from the caller. In the callback function,
@@ -51,7 +51,7 @@ function startContainer( image, command, containerHasStarted ) {
 		container.start( function(err, startData) {
 			//checkContainerStatus();
 			container.inspect(function(err, containerData) {
-				containerHasStarted(null, containerData);				
+				containerHasStarted(null, containerData);
 			});
 		});
 
@@ -62,7 +62,7 @@ function lookForMusicianContainers( containersHaveBeenFound ) {
 	var musicians = [];
 	docker.listContainers(function(err, containers) {
 		containers.forEach(function( container) {
-			if (container.Image === "res/musician") {
+			if (container.Image === "api/musician") {
 				musicians.push(container.Command.split(' ')[2]);
 			}
 		});
@@ -75,7 +75,7 @@ function lookForAuditorContainers( containersHaveBeenFound ) {
 	docker.listContainers(function(err, containers) {
 		containers.forEach(function( container) {
 			//console.log("img: " + container.Image);
-			if (container.Image === "res/auditor") {
+			if (container.Image === "api/auditor") {
 				auditors.push(container);
 			}
 		});
@@ -111,4 +111,3 @@ DockerUtils.prototype.killRandomMusicianContainer = killRandomMusicianContainer;
 DockerUtils.prototype.dump = dump;
 
 module.exports = new DockerUtils();
-

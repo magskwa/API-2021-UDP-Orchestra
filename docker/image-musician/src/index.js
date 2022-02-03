@@ -39,10 +39,13 @@ function Musician(instrument) {
             });
     }
 
+    this.sendSound();
     setInterval(this.sendSound.bind(this), 1000);
 
 }
 
 var instrument = process.argv[2];
 
-var musician = new Musician(instrument);
+if (getSound(instrument) !== 'no_sound') {
+    var musician = new Musician(instrument);
+}
